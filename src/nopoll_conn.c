@@ -3470,7 +3470,7 @@ noPollMsg   * nopoll_conn_get_msg (noPollConn * conn)
 
 			nopoll_log (conn->ctx, NOPOLL_LEVEL_DEBUG, "PING received over connection id=%d, replying PONG", conn->id);
                         if (conn->on_ping) {
-                            conn->on_ping (conn->ctx, conn, conn->on_ping_data);
+                            conn->on_ping (conn->ctx, conn, msg, conn->on_ping_data);
                         }
 			/* call to send pong */
 			nopoll_conn_send_pong (conn, nopoll_msg_get_payload_size (msg), (noPollPtr)nopoll_msg_get_payload (msg));
@@ -3588,7 +3588,7 @@ read_payload:
 		nopoll_log (conn->ctx, NOPOLL_LEVEL_DEBUG, "PING received over connection id=%d and payload_size=%d, replying PONG",
 			    conn->id, msg->payload_size);
                 if (conn->on_ping) {
-                    conn->on_ping (conn->ctx, conn, conn->on_ping_data);
+                    conn->on_ping (conn->ctx, conn, msg, conn->on_ping_data);
                 }
 		nopoll_conn_send_pong (conn, nopoll_msg_get_payload_size (msg), (noPollPtr)nopoll_msg_get_payload (msg));
 		nopoll_msg_unref (msg);
@@ -4175,14 +4175,14 @@ void          nopoll_conn_set_on_close (noPollConn            * conn,
  *              
  * @param user_data A reference pointer to be passed in into the handler.
  */             
-void          nopoll_conn_set_on_ping (noPollConn           * conn,
-                                       noPollOnPingHandler    on_ping,
-                                       noPollPtr              user_data)
+void          nopoll_conn_set_on_ping_msg (noPollConn              * conn,
+                                           noPollOnMessageHandler    on_ping,
+                                           noPollPtr                 user_data)
 {       
         if (conn == NULL)
                 return;
         
-        /* configure on close handler */
+        /* configure on ping handler */
         conn->on_ping      = on_ping;
         conn->on_ping_data = user_data;
                 

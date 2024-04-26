@@ -248,8 +248,8 @@ struct _noPollConn {
         /** 
          * @internal Reference to the defined on ping handling.
          */
-        noPollOnPingHandler    on_ping;
-        noPollPtr              on_ping_data;
+        noPollOnMessageHandler    on_ping;
+        noPollPtr                 on_ping_data;
 
 	/* reference to the handshake */
 	noPollHandShake  * handshake;
